@@ -5,10 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChaletPrice extends Model
+class ChaletSeason extends Model
 {
     use HasFactory;
-
-    protected $table = 'chalet_prices';
-    protected $guarded = [];
 }

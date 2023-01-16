@@ -12,25 +12,27 @@ class Prices extends Component
     public $SIZES;
 
     public $chalet;
-    public $chaletPrices = [];
+    public $chaletSeasons = [];
     public $seasons = [];
     public $seasons_list = [];
 
     public function mount(Chalet $chalet)
     {
+
         $this->TYPES = Chalet::TYPES;
         $this->SIZES = Chalet::SIZES;
         $this->seasons = $this->seasons_list = Season::pluck('name', 'id');
         $this->chalet = $chalet;
         if($this->chalet){
-            foreach ($this->chalet->prices as $price) {
-                $this->chaletPrices[] = [
-                    'price_id' => $price->id,
-                    'price' => $price->price,
-                    'chalet_id' => $price->chalet_id,
-                    'season_id' => $price->season_id,
+            foreach ($this->chalet->seasons as $season) {
+                $this->chaletSeasons[] = [
+                    'price_id' => $season->pivot->id,
+                    'price' => $season->pivot->price,
+                    'chalet_id' => $season->pivot->chalet_id,
+                    'season_id' => $season->pivot->season_id,
                     'is_saved' => true,
                 ];
+
             }
         }
     }
@@ -39,14 +41,14 @@ class Prices extends Component
     {
         return view('livewire.prices');
     }
-    public function addPrice(){
-        foreach ($this->chaletPrices as $chalet_price) {
-            if (isset($chalet_price['is_saved']) && !$chalet_price['is_saved']) {
+    public function addSeason(){
+        foreach ($this->chaletSeasons as $chalet_season) {
+            if (isset($chalet_season['is_saved']) && !$chalet_season['is_saved']) {
                 $this->addError('يجب حفظ هذا السعر أولا');
                 return;
             }
         }
-        $this->chaletPrices[] = [
+        $this->chaletSeasons[] = [
             'price' => 0,
             'chalet_id' => $this->chalet->id??'',
             'season_id' => array_key_first($this->seasons->toArray()),
@@ -54,54 +56,61 @@ class Prices extends Component
         ];
     }
 
-    public function editPrice($index){
-        foreach ($this->chaletPrices as $chalet_price) {
-            if (!$chalet_price['is_saved']) {
+    public function editSeason($index){
+        foreach ($this->chaletSeasons as $chalet_season) {
+            if (!$chalet_season['is_saved']) {
                 $this->addError('يجب حفظ هذا السعر أولا');
                 return;
             }
         }
 
-        $this->seasons[$this->chaletPrices[$index]['season_id']] = $this->seasons_list[$this->chaletPrices[$index]['season_id']];
-        $this->chaletPrices[$index]['is_saved'] = false;
+        $this->seasons[$this->chaletSeasons[$index]['season_id']] = $this->seasons_list[$this->chaletSeasons[$index]['season_id']];
+        $this->chaletSeasons[$index]['is_saved'] = false;
     }
 
 
-    public function savePrice($index){
+    public function saveSeason($index){
         $this->resetErrorBag();
-        $this->chaletPrices[$index]['is_saved'] = true;
-        unset($this->seasons[$this->chaletPrices[$index]['season_id']]);
-        //dd($this->seasons);
+        $this->chaletSeasons[$index]['is_saved'] = true;
+        unset($this->seasons[$this->chaletSeasons[$index]['season_id']]);
     }
 
-    public function removePrice($index){
-        $this->seasons[$this->chaletPrices[$index]['season_id']] = $this->seasons_list[$this->chaletPrices[$index]['season_id']];
-        unset($this->chaletPrices[$index]);
-        $this->chaletPrices = array_values($this->chaletPrices);
+    public function removeSeason($index){
+        $this->seasons[$this->chaletSeasons[$index]['season_id']] = $this->seasons_list[$this->chaletSeasons[$index]['season_id']];
+        unset($this->chaletSeasons[$index]);
+        $this->chaletSeasons = array_values($this->chaletSeasons);
     }
 
 
-    public function saveChaletPrices(){
+    public function saveChaletSeasons(){
         $this->validate();
+        $this->chalet->size = $this->chalet->size ? $this->chalet->size : 1;
+        $this->chalet->type = $this->chalet->type ? $this->chalet->type : 1;
+        $this->chalet->external_session = $this->chalet->external_session ? 1 : 0;
+        $this->chalet->pool = $this->chalet->pool ? 1 : 0;
         $this->chalet->save();
-        $chaletPrices = [];
+        $chaletSeasons = [];
 
-        foreach ($this->chaletPrices as $chalet_price) {
-            $chaletPrices[$chalet_price['id']] = [
-                'price' => $chalet_price['price'],
-                'season_id' => $chalet_price['prseason_idice'],
-                'chalet_id' => $chalet_price['chalet_id']
+        foreach ($this->chaletSeasons as $chalet_season) {
+            $chaletSeasons[$chalet_season['season_id']] = [
+                'price' => $chalet_season['price'],
+                'season_id' => $chalet_season['season_id']
             ];
         }
 
-        $this->chalet->prices()->sync($chaletPrices);
-
-        return redirect()->route('chalet.index');
+        $this->chalet->seasons()->sync($chaletSeasons);
+        session()->flash('message', 'تم الحفظ بنجاح');
+        return redirect()->route('chalet.edit', $this->chalet->id);
     }
 
     public function rules(): array {
         return [
-            'name' =>'required'
+            'chalet.name' =>'required',
+            'chalet.size' =>'',
+            'chalet.type' =>'',
+            'chalet.external_session' =>'',
+            'chalet.contact' =>'',
+            'chalet.pool' =>'',
         ];
     }
 

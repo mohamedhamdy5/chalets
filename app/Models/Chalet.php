@@ -20,8 +20,8 @@ class Chalet extends Model
         2 => 'عزاب',
     ];
 
-    public function prices()
+    public function seasons()
     {
-        return $this->hasMany(ChaletPrice::class, 'chalet_id');
+        return $this->belongsToMany(Season::class)->withPivot('id', 'price');
     }
 }

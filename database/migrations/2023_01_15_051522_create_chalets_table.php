@@ -20,12 +20,12 @@ return new class extends Migration
             $table->tinyInteger('type')->comment('1=family, 2=individual');
             $table->tinyInteger('pool')->comment('0=no pool, 1=has pool');
             $table->tinyInteger('external_session')->comment('0=no external session, 1=has external session');
-            $table->string('location');
+            // $table->string('location');
             $table->string('contact');
-            $table->integer('price');
-            $table->string('facebook');
-            $table->string('twitter');
-            $table->string('instagram');
+            // $table->integer('price');
+            // $table->string('facebook');
+            // $table->string('twitter');
+            // $table->string('instagram');
             $table->timestamps();
         });
     }

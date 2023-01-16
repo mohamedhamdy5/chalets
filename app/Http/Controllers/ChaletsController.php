@@ -15,9 +15,11 @@ class ChaletsController extends Controller
      */
     public function index(Request $request)
     {
+    $TYPES = Chalet::TYPES;
+      $SIZES = Chalet::SIZES;
       $seasons = Season::get();
-      $chalets = Chalet::with('chalet_prices')->get();
-      return view('chalet.index',compact('chalets', 'seasons'));
+      $chalets = Chalet::with('seasons')->get();
+      return view('chalet.index',compact('TYPES', 'SIZES', 'chalets', 'seasons'));
     }
 
     /**
@@ -42,11 +44,11 @@ class ChaletsController extends Controller
      */
     public function store(Request $request)
     {
-      $data['pool'] = $request->input('pool')?1:0;
-      $data['external_session'] = $request->input('external_session')?1:0;
-      $chalet = Chalet::create($data);
+    //   $data['pool'] = $request->input('pool')?1:0;
+    //   $data['external_session'] = $request->input('external_session')?1:0;
+    //   $chalet = Chalet::create($data);
 
-      return redirect()->route('chalet.index')->with('success', __('messages.Chalet Created Successfully'));
+    //   return redirect()->route('chalet.index')->with('success', __('messages.Chalet Created Successfully'));
     }
 
     /**
@@ -68,7 +70,10 @@ class ChaletsController extends Controller
      */
     public function edit(Chalet $chalet)
     {
-        //
+        $TYPES = Chalet::TYPES;
+        $SIZES = Chalet::SIZES;
+        $seasons = Season::get();
+        return view('chalet.edit',compact('TYPES', 'SIZES', 'seasons', 'chalet'));
     }
 
     /**

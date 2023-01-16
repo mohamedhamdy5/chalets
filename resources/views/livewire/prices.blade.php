@@ -77,17 +77,17 @@
             </tr>
         </thead>
         <tbody>
-        @if(!empty($chaletPrices))
+        @if(!empty($chaletSeasons))
 
-            @foreach($chaletPrices as $index => $chaletPrice)
-            <?php //dd($chaletPrices[$index]);?>
+            @foreach($chaletSeasons as $index => $chaletSeason)
+
                 <tr>
                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        @if(isset($chaletPrice['is_saved']) && $chaletPrice['is_saved'])
-                            <input type="hidden" name="chaletPrices[{{$index}}]['price_id']" wire:model="chaletPrices.{{$index}}.price_id" />
-                            {{ $seasons_list[$chaletPrice['season_id']] }}
+                        @if(isset($chaletSeason['is_saved']) && $chaletSeason['is_saved'])
+                            <input type="hidden" name="chaletSeasons[{{$index}}]['price_id']" wire:model="chaletSeasons.{{$index}}.price_id" />
+                            {{ $seasons_list[$chaletSeason['season_id']] }}
                         @else
-                            <select name="chaletPrices[{{$index}}]['season_id']" wire:model="chaletPrices.{{$index}}.season_id" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <select name="chaletSeasons[{{$index}}]['season_id']" wire:model="chaletSeasons.{{$index}}.season_id" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                 @foreach ($seasons as $season_id => $season_name)
                                     <option value="{{ $season_id }}">{{ $season_name }}</option>
                                 @endforeach
@@ -99,37 +99,36 @@
                     </td>
 
                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        @if(isset($chaletPrice['is_saved']) && $chaletPrice['is_saved'])
-                            <input name="chaletPrices[{{$index}}]['price']" wire:model="chaletPrices.{{$index}}.price" type="hidden">
-                            {{ $chaletPrice['price'] }}
+                        @if(isset($chaletSeason['is_saved']) && $chaletSeason['is_saved'])
+                            <input name="chaletSeasons[{{$index}}]['price']" wire:model="chaletSeasons.{{$index}}.price" type="hidden">
+                            {{ $chaletSeason['price'] }}
                         @else
-                            <input name="chaletPrices[{{$index}}]['price']" wire:model="chaletPrices.{{$index}}.price" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text">
+                            <input name="chaletSeasons[{{$index}}]['price']" wire:model="chaletSeasons.{{$index}}.price" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text">
                         @endif
 
                     </td>
 
 
                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        @if(isset($chaletPrice['is_saved']) && $chaletPrice['is_saved'])
-                            <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="editPrice({{$index}})"> تعديل </button>
+                        @if(isset($chaletSeason['is_saved']) && $chaletSeason['is_saved'])
+                            <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="editSeason({{$index}})"> تعديل </button>
                         @else
-                            <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="savePrice({{$index}})"> حفظ </button>
+                            <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="saveSeason({{$index}})"> حفظ </button>
                         @endif
 
-                        <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="removePrice({{$index}})"> حذف </button>
+                        <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="removeSeason({{$index}})"> حذف </button>
 
 
                     </td>
                 </tr>
+                <?php unset($seasons[$chaletSeason["season_id"]]);?>
             @endforeach
         @endif
         </tbody>
     </table>
     @if(!empty($this->seasons->toArray()))
-    <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="addPrice"> إضافة سعر </button>
+    <button class="font-semibold leading-tight text-xs text-slate-400" wire:click.prevent="addSeason"> إضافة سعر </button>
     @endif
     <br />
-    <button wire:click.prevent="saveChaletPrices" type="button" class="shadbg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-    حفظ البيانات
-    </button>
+    <button wire:click.prevent="saveChaletSeasons" type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">حفظ البيانات</button>
 </div>
