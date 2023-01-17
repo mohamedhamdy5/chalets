@@ -42,9 +42,9 @@ class Prices extends Component
         return view('livewire.prices');
     }
     public function addSeason(){
-        foreach ($this->chaletSeasons as $chalet_season) {
+        foreach ($this->chaletSeasons as $key => $chalet_season) {
             if (isset($chalet_season['is_saved']) && !$chalet_season['is_saved']) {
-                $this->addError('يجب حفظ هذا السعر أولا');
+                $this->addError('chaletSeasons.'.$key,'يجب حفظ هذا السعر أولا');
                 return;
             }
         }
@@ -59,7 +59,7 @@ class Prices extends Component
     public function editSeason($index){
         foreach ($this->chaletSeasons as $chalet_season) {
             if (!$chalet_season['is_saved']) {
-                $this->addError('يجب حفظ هذا السعر أولا');
+                $this->addError('chaletSeasons.'.$index, 'يجب حفظ هذا السعر أولا');
                 return;
             }
         }
@@ -105,11 +105,11 @@ class Prices extends Component
 
     public function rules(): array {
         return [
-            'chalet.name' =>'required',
+            'chalet.name' =>'required|unique:chalets,name,'.$this->chalet->id.'|max:255',
             'chalet.size' =>'',
             'chalet.type' =>'',
             'chalet.external_session' =>'',
-            'chalet.contact' =>'',
+            'chalet.contact' =>'digits:10',
             'chalet.pool' =>'',
         ];
     }

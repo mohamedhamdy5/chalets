@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('page_title', 'تعديل إستراحة')
+
 @section('content')
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
