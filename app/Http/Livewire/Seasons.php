@@ -43,7 +43,16 @@ class Seasons extends Component
 
     public function rules(): array {
         return [
-            'season.name' =>'required',
+            'season.name' =>'required|unique:seasons,name,'.$this->season->id.'|max:255',
+            'season.status' =>''
+        ];
+    }
+
+    public function messages(): array {
+        return [
+            'season.name.required' =>'اسم الموسم مطلوب',
+            'season.name.unique' =>'هذا الاسم موجود بالفعل',
+            'season.name.max' =>'يجب الا يزيد طول الاسم عن 255 حرف',
             'season.status' =>''
         ];
     }

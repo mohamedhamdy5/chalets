@@ -110,7 +110,15 @@ class Prices extends Component
             'chalet.type' =>'',
             'chalet.external_session' =>'',
             'chalet.contact' =>'digits:10',
-            'chalet.pool' =>'',
+            'chalet.pool' =>''
+        ];
+    }
+    public function messages(): array {
+        return [
+            'chalet.name.required' =>'اسم الاستراحة مطلوب',
+            'chalet.name.unique' =>'هذا الاسم موجود بالفعل',
+            'chalet.name.max' =>'يجب الا يزيد طول الاسم عن 255 حرف',
+            'chalet.contact.digits' =>'رقم التواصل يجب ان يكون 10 أرقام'
         ];
     }
 
