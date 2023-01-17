@@ -42,25 +42,26 @@
                                     <td class="p-2 leading-normal text-center align-middle bg-transparent border-b text-sm whitespace-nowrap shadow-transparent">
                                         <span class="font-semibold leading-tight text-xs text-slate-400">{{ $TYPES[$chalet->type] }}</span>
                                     </td>
-
-
-                                    <td class="p-2 border-b flex items-center align-middle text-center">
+                                    <td class="px-6 py-4 p-2 border-b items-center align-middle text-center">
+                                        <div class="flex items-center">
 
                                         @if($chalet->pool)
                                             <div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2 ml-2"></div> يوجد
                                         @else
                                             <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2 ml-2"></div> لا يوجد
                                         @endif
-
+                                        </div>
                                     </td>
 
-                                    <td class="p-2 border-b flex items-center align-middle text-center">
+                                    <td class="px-6 py-4 p-2 border-b items-center align-middle text-center">
+                                        <div class="flex items-center">
 
                                         @if($chalet->external_session)
                                             <div class="h-2.5 w-2.5 rounded-full bg-green-400 mr-2 ml-2"></div> يوجد
                                         @else
                                             <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2 ml-2"></div> لا يوجد
                                         @endif
+                                        </div>
                                     </td>
                                     <td class="p-2 align-middle text-center bg-transparent border-b whitespace-nowrap shadow-transparent">
                                         <h6 class="mb-0 leading-normal text-sm">{{ $chalet->contact }}</h6>
